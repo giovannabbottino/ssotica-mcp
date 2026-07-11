@@ -1,0 +1,11 @@
+.env
+.venv/
+.venv-mcp/
+.uv-python/
+__pycache__/
+*.pyc
+.DS_Store
+.uv-cache/
+work/
+data/empresas.csv
+data/vendas/
