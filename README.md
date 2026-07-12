@@ -7,7 +7,7 @@ Servidor MCP local em Python para as seis APIs consultivas documentadas do ssOti
 Use Python 3.10 ou posterior.
 
 ```bash
-cd /Users/mauriciobottino/Documents/Motta/mcp
+cd mcp
 python3.12 -m venv .venv-mcp
 source .venv-mcp/bin/activate
 pip install -r requirements.txt
@@ -35,8 +35,8 @@ Em **Settings → MCP → Add new MCP server**, ou em `.cursor/mcp.json`:
 {
   "mcpServers": {
     "ssotica": {
-      "command": "/Users/mauriciobottino/Documents/Motta/mcp/.venv-mcp/bin/python",
-      "args": ["/Users/mauriciobottino/Documents/Motta/mcp/mcp_server.py"]
+      "command": "~/mcp/.venv-mcp/bin/python",
+      "args": ["~/mcp/mcp_server.py"]
     }
   }
 }
@@ -44,8 +44,8 @@ Em **Settings → MCP → Add new MCP server**, ou em `.cursor/mcp.json`:
 
 ## Tools disponíveis
 
-Todas recebem `empresa`. O servidor aceita **CNPJ sem pontuação** ou **Código da Licença** e resolve automaticamente via `data/empresas.csv`. Se um CNPJ tiver várias licenças, informe também `licenca` com o código da unidade desejada.
-
+Todas recebem `empresa`. O servidor aceita **CNPJ sem pontuação** ou **Código da Licença** e resolve automaticamente via `data/empresas.csv`. Se uma API da ssOtica aceitar somente CNPJ e esse CNPJ tiver várias licenças, o servidor consulta o CNPJ normalmente e salva o resultado agregado do conjunto.
+ 
 | Tool | API | Identificador | Período |
 | --- | --- | --- | --- |
 | `consultar-empresas` | Lista local | — | — |
@@ -59,7 +59,7 @@ Todas recebem `empresa`. O servidor aceita **CNPJ sem pontuação** ou **Código
 Argumentos opcionais:
 
 - **Período:** `data_inicio`, `data_fim` (`YYYY-MM-DD`; padrão: mês atual até hoje)
-- **Desambiguação:** `licenca` (obrigatório quando o CNPJ possui várias licenças em `data/empresas.csv`)
+- **Desambiguação:** `licenca` (usada nas APIs que aceitam Código da Licença)
 - **Produtos:** `referencia`, `produto_id`, `page`, `per_page` (máx. 100)
 - **Contas a pagar:** `tipo_periodo` (`vencimento`, `cancelamento`, `pagamento`, `lançamento`, `emissao`), `conta_id`, `documento`, `emissao`, `page`, `per_page`
 - **Contas a receber:** `tipo_periodo` (`vencimento`, `cancelamento`, `pagamento`, `lançamento`, `renegociacao`), `conta_id`, `documento`, `renegociacao`, `page`, `per_page`
@@ -83,5 +83,5 @@ CSVs em `data/`, organizados por tipo: `vendas/`, `ordens_servico/`, `lancamento
 - **401 / 403:** token inválido, expirado ou sem permissão.
 - **404:** confirme se a conta possui acesso à API consultiva contratada.
 - **Período inválido:** vendas, O.S. e extrato aceitam no máximo 30 dias por consulta.
-- **CNPJ com várias licenças:** informe `licenca` com o Código da Licença da unidade (ex.: `RODO-UYEN`, `XLNH-PLI`).
+- **CNPJ com várias licenças em API somente por CNPJ:** a consulta retorna o agregado do CNPJ; a API ssOtica não retorna a licença nos registros para separar as unidades.
 - **Sem resultados:** é gerado um CSV com cabeçalho; revise identificador, período e filtros.

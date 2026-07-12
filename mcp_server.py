@@ -127,11 +127,7 @@ def resolve_empresa(empresa: str, licenca: str | None = None) -> EmpresaRegistro
     if by_cnpj:
         if len(by_cnpj) == 1:
             return by_cnpj[0]
-        licencas = ", ".join(item.codigo_licenca for item in by_cnpj)
-        raise SsOticaError(
-            f"O CNPJ {normalized_cnpj} possui várias licenças ({licencas}). "
-            "Informe licenca com o Código da Licença da unidade desejada."
-        )
+        return EmpresaRegistro(cnpj=normalized_cnpj, codigo_licenca="", nome="")
 
     if CNPJ_DIGITS.fullmatch(normalized_cnpj):
         return EmpresaRegistro(cnpj=normalized_cnpj, codigo_licenca="", nome="")

@@ -9,3 +9,4 @@ __pycache__/
 work/
 data/empresas.csv
 data/vendas/
+data/*/
