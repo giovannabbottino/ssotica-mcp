@@ -125,9 +125,7 @@ def resolve_empresa(empresa: str, licenca: str | None = None) -> EmpresaRegistro
     normalized_cnpj = normalize_cnpj(value)
     by_cnpj = [item for item in empresas if item.cnpj == normalized_cnpj]
     if by_cnpj:
-        if len(by_cnpj) == 1:
-            return by_cnpj[0]
-        return EmpresaRegistro(cnpj=normalized_cnpj, codigo_licenca="", nome="")
+        return by_cnpj[0]
 
     if CNPJ_DIGITS.fullmatch(normalized_cnpj):
         return EmpresaRegistro(cnpj=normalized_cnpj, codigo_licenca="", nome="")
